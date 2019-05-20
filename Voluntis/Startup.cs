@@ -40,6 +40,11 @@ namespace Voluntis
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/error");
+                //app.UseStatusCodePagesWithRedirects("/SatusCode?code={0}");
+            }
 
             // Middleware pour les fichiers statics
             app.UseStaticFiles();
@@ -56,7 +61,14 @@ namespace Voluntis
         {
             routeBuilder.MapRoute(
                 name: "Default",
-                template: "{controller}/{action}/{id?}");
+                template: "{controller}/{action}/{id?}",
+                defaults: new { controller = "Home", action = "index" });
+
+            /*routeBuilder.MapRoute(
+                name: "apropos",
+                template: "a-propos-de",
+                defaults: new { controller = "Home", action = "About" });
+                */
         }
     }
 }

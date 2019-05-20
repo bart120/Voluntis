@@ -12,5 +12,11 @@ namespace Voluntis.Controllers
         {
             return View();
         }
+
+        [Route("a-propos-de", Name = "apropos")]
+        public IActionResult About()
+        {
+            return View();
+        }
     }
 }
