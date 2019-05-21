@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,6 +54,13 @@ namespace Voluntis
 
         private void ConfigureRoute(IRouteBuilder routeBuilder)
         {
+            // area route
+            routeBuilder.MapRoute(
+                name: "areas",
+                template: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}"
+            );
+
+            // default route
             routeBuilder.MapRoute(
                 name: "Default",
                 template: "{controller}/{action}/{id?}",
