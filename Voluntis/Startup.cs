@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Voluntis.Data;
 
 // https://github.com/bart120/Voluntis
 
@@ -25,6 +27,10 @@ namespace Voluntis
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<VoluntisDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("VolConnection"))
+            );
+
             services.AddMvc();
         }
 
