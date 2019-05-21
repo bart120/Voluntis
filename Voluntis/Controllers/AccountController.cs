@@ -18,6 +18,11 @@ namespace Voluntis.Controllers
         [HttpPost]
         public IActionResult Register(RegisterViewModel model)
         {
+            /*if(model.Birthdate.AddYears(18) > DateTime.Now)
+            {
+                ModelState.AddModelError("Birthdate", "Vous devez avoir 18 ans.");
+            }*/
+
             if (ModelState.IsValid)
             {
                 //save bdd

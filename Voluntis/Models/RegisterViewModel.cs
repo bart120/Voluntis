@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Voluntis.Class.Validators;
 
 namespace Voluntis.Models
 {
@@ -36,6 +37,7 @@ namespace Voluntis.Models
         [Display(Name = "Date de naissance", Prompt = "votre date de naissance")]
         [Required(ErrorMessage = "{0} obligatoire")]
         [DataType(DataType.Date)]
+        [MinDate(18, ErrorMessage = "Vous devez avoir {1} ans.")]
         public DateTime Birthdate { get; set; }
     }
 }
