@@ -28,7 +28,9 @@
                 <ul class="navbar-nav mr-auto">
                     
                     <li class="nav-item">
-                        @Html.ActionLink("A propos", "about", "home", null, new { @class = "nav-link" })
+                        @*@Html.ActionLink("A propos", "about", "home", null, new { @class = "nav-link" })
+                        <a href="@Url.Action("about", "home")" class="nav-link">A propos</a>*@
+                        <a class="nav-link" asp-action="about" asp-controller="home">A propos</a>
 @*                        <a class="nav-link" href="#">A propos</a>*@
                     </li>
                     <li class="nav-item dropdown">
