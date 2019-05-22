@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,11 @@ using Voluntis.Models;
 
 namespace Voluntis.Data
 {
-    public class VoluntisDbContext : DbContext
+    public class VoluntisDbContext : IdentityDbContext<User>//DbContext
     {
         public VoluntisDbContext(DbContextOptions<VoluntisDbContext> options) : base(options)
         {
+            
         }
 
         public DbSet<Category> Categories { get; set; }
