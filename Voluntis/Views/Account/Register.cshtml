@@ -1,10 +1,13 @@
 ﻿@model Voluntis.Models.RegisterViewModel
 
 @{
+    Layout = "_LayoutForm";
     ViewData["Title"] = "Register";
 }
 
-<h1>S'inscrire</h1>
+@section SectionTitle{ 
+    S'inscrire
+}
 
 <form method="post" novalidate>
 
@@ -49,3 +52,6 @@
     <button type="submit" class="btn btn-primary">S'inscrire</button>
 </form>
 
+@section SectionScripts{
+    
+}
