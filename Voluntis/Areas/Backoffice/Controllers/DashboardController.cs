@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Voluntis.Data;
 
 namespace Voluntis.Areas.Backoffice.Controllers
@@ -16,11 +17,11 @@ namespace Voluntis.Areas.Backoffice.Controllers
             this.voluntisDbContext = voluntisDbContext;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ViewData["Users"] = voluntisDbContext.Users;
+            ViewData["Users"] = await voluntisDbContext.Users.ToListAsync();
 
-            var categories = voluntisDbContext.Categories.ToList();
+            var categories = await voluntisDbContext.Categories.ToListAsync();
             return View(categories);
         }
     }

@@ -24,6 +24,7 @@ namespace Voluntis.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             /*if(model.Birthdate.AddYears(18) > DateTime.Now)
