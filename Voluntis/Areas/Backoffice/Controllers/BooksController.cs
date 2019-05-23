@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,22 +11,23 @@ using Voluntis.Models;
 namespace Voluntis.Areas.Backoffice.Controllers
 {
     [Area("Backoffice")]
-    public class CategoriesController : Controller
+    public class BooksController : Controller
     {
         private readonly VoluntisDbContext _context;
 
-        public CategoriesController(VoluntisDbContext context)
+        public BooksController(VoluntisDbContext context)
         {
             _context = context;
         }
 
-        // GET: Backoffice/Categories
+        // GET: Backoffice/Books
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            var voluntisDbContext = _context.Books.Include(b => b.Category);
+            return View(await voluntisDbContext.ToListAsync());
         }
 
-        // GET: Backoffice/Categories/Details/5
+        // GET: Backoffice/Books/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,39 +35,42 @@ namespace Voluntis.Areas.Backoffice.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
+            var book = await _context.Books
+                .Include(b => b.Category)
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (category == null)
+            if (book == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(book);
         }
 
-        // GET: Backoffice/Categories/Create
+        // GET: Backoffice/Books/Create
         public IActionResult Create()
         {
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "ID", "Name");
             return View();
         }
 
-        // POST: Backoffice/Categories/Create
+        // POST: Backoffice/Books/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name")] Category category)
+        public async Task<IActionResult> Create([Bind("ID,Title,Author,ISBN,PublishDate,Price,CategoryID")] Book book)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
+                _context.Add(book);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "ID", "Name", book.CategoryID);
+            return View(book);
         }
 
-        // GET: Backoffice/Categories/Edit/5
+        // GET: Backoffice/Books/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -75,22 +78,23 @@ namespace Voluntis.Areas.Backoffice.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            var book = await _context.Books.FindAsync(id);
+            if (book == null)
             {
                 return NotFound();
             }
-            return View(category);
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "ID", "Name", book.CategoryID);
+            return View(book);
         }
 
-        // POST: Backoffice/Categories/Edit/5
+        // POST: Backoffice/Books/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Author,ISBN,PublishDate,Price,CategoryID")] Book book)
         {
-            if (id != category.ID)
+            if (id != book.ID)
             {
                 return NotFound();
             }
@@ -99,12 +103,12 @@ namespace Voluntis.Areas.Backoffice.Controllers
             {
                 try
                 {
-                    _context.Update(category);
+                    _context.Update(book);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.ID))
+                    if (!BookExists(book.ID))
                     {
                         return NotFound();
                     }
@@ -115,10 +119,11 @@ namespace Voluntis.Areas.Backoffice.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            ViewData["CategoryID"] = new SelectList(_context.Categories, "ID", "Name", book.CategoryID);
+            return View(book);
         }
-        /*
-        // GET: Backoffice/Categories/Delete/5
+
+        // GET: Backoffice/Books/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -126,51 +131,31 @@ namespace Voluntis.Areas.Backoffice.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
+            var book = await _context.Books
+                .Include(b => b.Category)
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (category == null)
+            if (book == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(book);
         }
 
-        // POST: Backoffice/Categories/Delete/5
+        // POST: Backoffice/Books/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            _context.Categories.Remove(category);
+            var book = await _context.Books.FindAsync(id);
+            _context.Books.Remove(book);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }*/
-
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var cat = await _context.Categories.SingleOrDefaultAsync(x => x.ID == id);
-            if (cat == null)
-                return NotFound();
-
-            _context.Remove(cat);
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception e)
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json(new { e.Message });
-            }
-            return Json(cat);
         }
 
-        private bool CategoryExists(int id)
+        private bool BookExists(int id)
         {
-            return _context.Categories.Any(e => e.ID == id);
+            return _context.Books.Any(e => e.ID == id);
         }
     }
 }

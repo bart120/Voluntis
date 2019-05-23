@@ -20,16 +20,39 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr id="ligne-@item.ID">
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                @*<a asp-action="Delete" asp-route-id="@item.ID">Delete</a>*@
+                <a class="suppr" href="#" data-id="@item.ID"><i class="fa fa-trash"></i></a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+@section SectionScripts{ 
+    <script>    
+        $('a.suppr').click(function () {
+            var id = $(this).data('id');
+            //console.log(id);
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("delete")",
+                data: { id: id },
+                success: function (obj) {
+                    alert("La catégorie " + obj.name + " a été supprimée.");
+                    $("#ligne-" + id).fadeOut();
+                },
+                error: function (err) {
+                    alert(err.Message);
+                }
+            });
+            return false;
+        });
+    </script>
+}

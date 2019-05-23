@@ -15,6 +15,14 @@ namespace Voluntis.Data
             
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Book>().Property(p => p.Price).HasColumnType("decimal(6,2)");
+            base.OnModelCreating(builder);
+        }
+
         public DbSet<Category> Categories { get; set; }
+
+        public DbSet<Book> Books { get; set; }
     }
 }
