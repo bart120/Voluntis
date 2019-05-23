@@ -3,10 +3,13 @@
 @inject SignInManager<Voluntis.Models.User> signInManager;
 @inject UserManager<Voluntis.Models.User> userManager;
 
+
+
 @if (signInManager.IsSignedIn(this.User))
 {
+    var user = await userManager.GetUserAsync(this.User);
 <div style="color:white;">
-    Bonjour @userManager.GetUserName(this.User)
+    Bonjour @user.Firstname
     <a asp-action="logout" asp-controller="account" asp-area="" class="btn btn-dark">Se déconnecter</a>
 </div>
 }
