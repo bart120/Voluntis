@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Voluntis.Class;
 using Voluntis.Data;
 using Voluntis.Models;
 
@@ -62,6 +63,8 @@ namespace Voluntis.Areas.Backoffice.Controllers
             {
                 _context.Add(category);
                 await _context.SaveChangesAsync();
+
+                this.DisplayMessage("Catégorie créée", TypeMessage.SUCCESS);                
                 return RedirectToAction(nameof(Index));
             }
             return View(category);

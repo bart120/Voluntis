@@ -1,0 +1,8 @@
+﻿@if (TempData["Message"] != null)
+{
+    var message = Newtonsoft.Json.JsonConvert.DeserializeObject<Voluntis.Class.FlashMessage>(TempData["Message"].ToString());
+
+    <div class="alert alert-@message.Type.ToString().ToLower()" role="alert">
+        @message.Message
+    </div>
+}
