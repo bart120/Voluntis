@@ -50,6 +50,15 @@ namespace Voluntis
             })
                 .AddEntityFrameworkStores<VoluntisDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Expiration = TimeSpan.FromMinutes(20);
+
+                options.LoginPath = "/Account/onlogin";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+                
+            });
             
 
             services.AddMvc();
@@ -70,6 +79,8 @@ namespace Voluntis
 
             // Middleware pour les fichiers statics
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc(ConfigureRoute);
 

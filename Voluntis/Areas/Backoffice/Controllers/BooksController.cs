@@ -22,7 +22,7 @@ namespace Voluntis.Areas.Backoffice.Controllers
 
         // GET: Backoffice/Books
         public async Task<IActionResult> Index()
-        {
+        {            
             var voluntisDbContext = _context.Books.Include(b => b.Category);
             return View(await voluntisDbContext.ToListAsync());
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Voluntis.Data;
@@ -9,6 +10,7 @@ using Voluntis.Data;
 namespace Voluntis.Areas.Backoffice.Controllers
 {
     [Area("Backoffice")]
+    
     public class DashboardController : Controller
     {
         private readonly VoluntisDbContext voluntisDbContext;
@@ -17,6 +19,7 @@ namespace Voluntis.Areas.Backoffice.Controllers
             this.voluntisDbContext = voluntisDbContext;
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             ViewData["Users"] = await voluntisDbContext.Users.ToListAsync();

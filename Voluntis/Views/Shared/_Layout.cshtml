@@ -37,9 +37,9 @@
                         <a class="nav-link" asp-action="index" asp-controller="dashboard" asp-area="backoffice">Backoffice</a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <a asp-action="register" asp-controller="account" class="btn btn-light">S'inscrire</a>
-                </form>
+                <div class="form-inline my-2 my-lg-0">
+                    @await  Html.PartialAsync("_AuthenticationPartial")
+                </div>
             </div>
         </nav>
         @await  Html.PartialAsync("_MessagePartial")

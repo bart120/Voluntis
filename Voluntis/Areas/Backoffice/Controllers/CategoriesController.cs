@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using Voluntis.Models;
 namespace Voluntis.Areas.Backoffice.Controllers
 {
     [Area("Backoffice")]
+    [Authorize]
     public class CategoriesController : Controller
     {
         private readonly VoluntisDbContext _context;
@@ -23,6 +25,7 @@ namespace Voluntis.Areas.Backoffice.Controllers
         }
 
         // GET: Backoffice/Categories
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Categories.ToListAsync());
